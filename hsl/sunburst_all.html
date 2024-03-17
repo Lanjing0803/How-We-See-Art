@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<head>
+    <title>Sunburst Tutorial (d3 v4), Part 3</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+</head>
+<style>
+iframe {
+            display: none;
+    position: absolute;
+    top: 187.5px;
+    left:187.5px;
+    transform:translate(50,50) ;
+    border: none; 
+    min-width: 90%; 
+    min-height: 90%; 
+        }
+
+        button{
+            position:relative;
+            margin-top:60px;
+            z-index:4000
+        }
+        
+</style>
+<body>
+    <div>
+        <svg class="sunburst"></svg>
+    </div>
+  <div class="buttons">
+  
+    <label><button class="sizeSelect" type="radio" name="mode" value="size" checked onclick="showIframe('iframe15')"> 15th</label>
+    <label><button class="sizeSelect"  type="radio" name="mode" value="size16" onclick="showIframe('iframe16')"> 16th</label>
+    <label><button class="sizeSelect"  type="radio" name="mode" value="size17" onclick="showIframe('iframe17')"> 17th</label>
+    <label><button class="sizeSelect"  type="radio" name="mode" value="size18" onclick="showIframe('iframe18')"> 18th</label>
+    <label><button class="sizeSelect"  type="radio" name="mode" value="size19" onclick="showIframe('iframe19')"> 19th</label>
+    <label><button class="sizeSelect"  type="radio" name="mode" value="size20" onclick="showIframe('iframe20')"> 20th</label>
+</div>
+<iframe id="iframe15" src="dounut.html" style="display: block;"></iframe>
+    <iframe id="iframe16" src="dounut2.html"></iframe>
+    <iframe id="iframe17" src="dounut3.html"></iframe>
+    <iframe id="iframe18" src="dounut4.html"></iframe>
+    <iframe id="iframe19" src="dounut5.html"></iframe>
+    <iframe id="iframe20" src="dounut6.html"></iframe>
+
+    <script>
+function showIframe(iframeId) {
+    var iframes = document.querySelectorAll('iframe');
+
+    // Hide all iframes
+    iframes.forEach(function(iframe) {
+        iframe.style.display = 'none';
+    });
+
+    // Show the selected iframe
+    var selectedIframe = document.getElementById(iframeId);
+    selectedIframe.style.display = 'block';
+}
+
+        
+    </script>
+
+
+
+
+<script>
+    var width = 500;
+    var height = 500;
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal(d3.schemeCategory20b);
+    var sizeIndicator = "size";
+    var colorIndicator = "sentiment";
+
+    var g = d3.select('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+
+
+    var partition = d3.partition()
+        .size([2 * Math.PI, radius]);
+
+
+var nodeData = {
+ 
+			"name": "15th",
+           
+			"children": [
+            
+    {   "name": "hue5",
+        "color": "hsl(330, 90%, 50%)",
+        "children": [
+            {
+                "name": "S4",
+                "color": "hsl(330, 90%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(330, 90%, 90%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(330, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(330, 90%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(330, 90%, 30%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L0", "color": "hsl(330, 90%,10%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.9230769230769232}
+                ]
+            },
+            {
+                "name": "S3",
+                "color": "hsl(330, 70%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(330, 70%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(330, 70%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L2", "color": "hsl(330, 70%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(330, 70%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L0", "color": "hsl(330, 70%,10%)", "size": 0.7547169811320755,"size16": 0.5830903790087464 ,"size17": 0,"size18": 0,"size19": 0.7594936708860759,"size20": 0.9230769230769232}
+                ]
+            },
+            {
+                "name": "S2",
+                "color": "hsl(330, 50%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(330, 50%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(330, 50%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20":0.3076923076923077},
+                    { "name": "L2", "color": "hsl(330, 50%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(330, 50%, 30%)", "size": 0,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.6153846153846154},
+                    { "name": "L0", "color": "hsl(330, 50%,10%)", "size": 0 ,"size16": 0.8746355685131195,"size17": 0,"size18": 0,"size19": 0,"size20": 1.2307692307692308}
+                ]
+            },
+            {
+                "name": "S1",
+                "color": "hsl(330, 30%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(330, 30%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L3", "color": "hsl(330, 30%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(330, 30%, 50%)", "size": 0 ,"size16": 0,"size17": 0.3773584905660377,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L1", "color": "hsl(330, 30%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L0", "color": "hsl(330, 30%,10%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0.4347826086956521,"size19": 0.7594936708860759,"size20": 0.6153846153846154}
+                ]
+            },
+            {
+                "name": "S0",
+                "color": "hsl(330,10%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(330,10%, 90%)", "size": 0 ,"size16": 0,"size17": 0.3773584905660377,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(330,10%, 70%)", "size": 0,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(330,10%, 50%)", "size": 1.1320754716981132,"size16": 1.1661807580174928 ,"size17": 0,"size18": 0,"size19": 0,"size20":0.3076923076923077},
+                    { "name": "L1", "color": "hsl(330,10%, 30%)", "size": 0.7547169811320755 ,"size16": 2.3323615160349855,"size17": 1.509433962264151,"size18": 0.4347826086956521,"size19": 1.2658227848101269,"size20": 0.6153846153846154},
+                    { "name": "L0", "color": "hsl(330,10%,10%)", "size": 2.6415094339622645,"size16": 0.5830903790087464 ,"size17": 1.509433962264151,"size18": 0.8695652173913043,"size19": 1.5189873417721518,"size20": 1.5384615384615383}
+                ]
+            }
+        ]
+    },
+
+    { "name": "hue4",
+        "color": "hsl(270, 90%, 50%)",
+        "children": [
+            {
+                "name": "S4",
+                "color": "hsl(270, 90%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(270, 90%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(270, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(270, 90%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(270, 90%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L0", "color": "hsl(270, 90%,10%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0.8695652173913043,"size19": 0,"size20": 0}
+                ]
+            },
+            {
+                "name": "S3",
+                "color": "hsl(270, 70%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(270, 70%, 90%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(270, 70%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(270, 70%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(270, 70%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L0", "color": "hsl(270, 70%,10%)", "size": 0.3773584905660377,"size16": 0 ,"size17": 0,"size18": 0.4347826086956521,"size19": 0.2531645569620253,"size20": 0.30769230769230770}
+                ]
+            },
+            {
+                "name": "S2",
+                "color": "hsl(270, 50%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(270, 50%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(270, 50%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(270, 50%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(270, 50%, 30%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L0", "color": "hsl(270, 50%,10%)", "size": 0,"size16": 0.5830903790087464 ,"size17": 0.3773584905660377,"size18": 0,"size19": 0,"size20": 0}
+                ]
+            },
+            {
+                "name": "S1",
+                "color": "hsl(270, 30%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(270, 30%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(270, 30%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L2", "color": "hsl(270, 30%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L1", "color": "hsl(270, 30%, 30%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L0", "color": "hsl(270, 30%,10%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0.9230769230769232}
+                ]
+            },
+            {
+                "name": "S0",
+                "color": "hsl(270,10%, 50%)",
+                "children": [
+                    { "name": "L4", "color": "hsl(270,10%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                    { "name": "L3", "color": "hsl(270,10%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0.5063291139240507,"size20": 0},
+                    { "name": "L2", "color": "hsl(270,10%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0.2531645569620253,"size20": 0},
+                    { "name": "L1", "color": "hsl(270,10%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                    { "name": "L0", "color": "hsl(270,10%,10%)", "size": 0 ,"size16": 0,"size17": 0.3773584905660377,"size18": 0.4347826086956521,"size19": 0.2531645569620253,"size20": 0.3076923076923077}
+                ]
+            }
+        ]
+    }
+
+,
+{"name": "hue3",
+    "color": "hsl(210, 90%, 50%)",
+    "children": [
+        {
+            "name": "S4",
+            "color": "hsl(210, 90%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(210, 90%, 90%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(210, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(210, 90%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(210, 90%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L0", "color": "hsl(210, 90%,10%)", "size": 0.3773584905660377 ,"size16": 0.8746355685131195,"size17": 0,"size18": 0,"size19": 0,"size20": 0}
+            ]
+        },
+        {
+            "name": "S3",
+            "color": "hsl(210, 70%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(210, 70%, 90%)", "size": 0,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(210, 70%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(210, 70%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(210, 70%, 30%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0.4347826086956521,"size19": 0,"size20":0.6153846153846154},
+                { "name": "L0", "color": "hsl(210, 70%,10%)", "size": 0.7547169811320755 ,"size16": 0.8746355685131195,"size17": 1.509433962264151,"size18": 0.4347826086956521,"size19":2.278481012658228,"size20":1.2307692307692308}
+            ]
+        },
+        {
+            "name": "S2",
+            "color": "hsl(210, 50%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(210, 50%, 90%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(210, 50%, 70%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(210, 50%, 50%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L1", "color": "hsl(210, 50%, 30%)", "size": 0.3773584905660377 ,"size16": 0,"size17": 0,"size18": 0,"size19":1.7721518987341771,"size20":0.3076923076923077},
+                { "name": "L0", "color": "hsl(210, 50%,10%)", "size": 0 ,"size16": 0,"size17": 1.1320754716981132,"size18": 2.1739130434782608,"size19":2.0253164556962027,"size20":1.2307692307692308}
+            ]
+        },
+        {
+            "name": "S1",
+            "color": "hsl(210, 30%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(210, 30%, 90%)", "size": 0,"size16": 0 ,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(210, 30%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L2", "color": "hsl(210, 30%, 50%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19":0.2531645569620253,"size20": 0.9230769230769232},
+                { "name": "L1", "color": "hsl(210, 30%, 30%)", "size": 1.509433962264151,"size16": 0.8746355685131195 ,"size17": 1.509433962264151,"size18": 0.4347826086956521,"size19": 1.2658227848101269,"size20": 1.8461538461538465},
+                { "name": "L0", "color": "hsl(210, 30%,10%)", "size": 0.7547169811320755 ,"size16": 0.5830903790087464,"size17": 0.7547169811320755,"size18": 0.8695652173913043,"size19":2.278481012658228,"size20": 2.769230769230769}
+            ]
+        },
+        {
+            "name": "S0",
+            "color": "hsl(210,10%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(210,10%, 90%)", "size": 0.7547169811320755 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(210,10%, 70%)", "size": 0.7547169811320755 ,"size16": 0.5830903790087464,"size17": 0.3773584905660377,"size18": 0,"size19":0.5063291139240507,"size20": 0},
+                { "name": "L2", "color": "hsl(210,10%, 50%)", "size": 0.7547169811320755,"size16": 0.5830903790087464 ,"size17": 0.7547169811320755,"size18": 0.8695652173913043,"size19": 0.5063291139240507,"size20": 1.2307692307692308},
+                { "name": "L1", "color": "hsl(210,10%, 30%)", "size": 2.6415094339622645,"size16": 2.3323615160349855 ,"size17": 1.509433962264151,"size18": 1.7391304347826086,"size19":3.0379746835443036,"size20": 0.9230769230769232},
+                { "name": "L0", "color": "hsl(210,10%,10%)", "size": 3.018867924528302 ,"size16": 1.1661807580174928,"size17": 1.509433962264151,"size18": 0.8695652173913043,"size19": 1.7721518987341771,"size20":2.769230769230769}
+          ]
+        }
+    ]
+},
+
+
+{ "name": "hue2",
+    "color": "hsl(150, 90%, 50%)",
+    "children": [
+        {
+            "name": "S4",
+            "color": "hsl(150, 90%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(150, 90%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(150, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(150, 90%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(150, 90%, 30%)", "size": 0.3773584905660377 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L0", "color": "hsl(150, 90%,10%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0.8695652173913043,"size19": 0,"size20": 0.6153846153846154}
+            ]
+        },
+        {
+            "name": "S3",
+            "color": "hsl(150, 70%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(150, 70%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(150, 70%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(150, 70%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(150, 70%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L0", "color": "hsl(150, 70%,10%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 1.3043478260869563,"size19":2.0253164556962027,"size20": 0.9230769230769232}
+            ]
+        },
+        {
+            "name": "S2",
+            "color": "hsl(150, 50%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(150, 50%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(150, 50%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(150, 50%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(150, 50%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19":0.5063291139240507,"size20": 0},
+                { "name": "L0", "color": "hsl(150, 50%,10%)", "size": 0.3773584905660377 ,"size16": 0.8746355685131195,"size17": 0.7547169811320755,"size18": 1.7391304347826086,"size19":1.2658227848101269,"size20":0.9230769230769232}
+            ]
+        },
+        {
+            "name": "S1",
+            "color": "hsl(150, 30%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(150, 30%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(150, 30%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L2", "color": "hsl(150, 30%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(150, 30%, 30%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19":0.2531645569620253,"size20": 0.9230769230769232},
+                { "name": "L0", "color": "hsl(150, 30%,10%)", "size": 2.6415094339622645 ,"size16": 1.1661807580174928,"size17": 2.2641509433962264,"size18": 1.3043478260869563,"size19":3.79746835443038,"size20":3.692307692307693}
+            ]
+        },
+        {
+            "name": "S0",
+            "color": "hsl(150,10%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(150,10%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(150,10%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(150,10%, 50%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L1", "color": "hsl(150,10%, 30%)", "size": 2.2641509433962264 ,"size16": 1.4577259475218658,"size17": 0.3773584905660377,"size18": 0,"size19": 1.7721518987341771,"size20":1.5384615384615383},
+                { "name": "L0", "color": "hsl(150,10%,10%)", "size": 1.8867924528301887 ,"size16": 3.206997084548105,"size17": 3.018867924528302,"size18":1.7391304347826086 ,"size19": 1.7721518987341771,"size20": 2.769230769230769}
+             ]
+        }
+    ]
+}
+,
+{"name": "hue1",
+    "color": "hsl(90, 90%, 50%)",
+    "children": [
+        {
+            "name": "S4",
+            "color": "hsl(90, 90%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(90, 90%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(90, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(90, 90%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(90, 90%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20":0.3076923076923077},
+                { "name": "L0", "color": "hsl(90, 90%,10%)", "size": 0 ,"size16": 1.1661807580174928,"size17": 0,"size18": 0,"size19": 0,"size20": 0}
+            ]
+        },
+        {
+            "name": "S3",
+            "color": "hsl(90, 70%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(90, 70%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(90, 70%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(90, 70%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(90, 70%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L0", "color": "hsl(90, 70%,10%)", "size": 0 ,"size16": 2.623906705539359,"size17": 0,"size18": 1.3043478260869563,"size19": 0,"size20": 0.3076923076923077}
+            ]
+        },
+        {
+            "name": "S2",
+            "color": "hsl(90, 50%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(90, 50%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(90, 50%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(90, 50%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(90, 50%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L0", "color": "hsl(90, 50%,10%)", "size": 0 ,"size16": 0,"size17": 1.1320754716981132,"size18": 0.4347826086956521,"size19":1.0126582278481011,"size20": 0}
+            ]
+        },
+        {
+            "name": "S1",
+            "color": "hsl(90, 30%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(90, 30%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(90, 30%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(90, 30%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L1", "color": "hsl(90, 30%, 30%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0.4347826086956521,"size19": 0,"size20":0.3076923076923077},
+                { "name": "L0", "color": "hsl(90, 30%,10%)", "size": 0 ,"size16":0.2915451895043732,"size17": 0.3773584905660377,"size18":1.3043478260869563,"size19":0.5063291139240507,"size20": 0.9230769230769232}
+            ]
+        },
+        {
+            "name": "S0",
+            "color": "hsl(90,10%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(90,10%, 90%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0.3076923076923077},
+                { "name": "L3", "color": "hsl(90,10%, 70%)", "size": 0 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L2", "color": "hsl(90,10%, 50%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L1", "color": "hsl(90,10%, 30%)", "size": 0 ,"size16":0.2915451895043732,"size17": 0.7547169811320755,"size18": 0,"size19":0.5063291139240507,"size20": 0.3076923076923077},
+                { "name": "L0", "color": "hsl(90,10%,10%)", "size": 0.3773584905660377,"size16": 0.2915451895043732,"size17": 1.1320754716981132,"size18": 0.4347826086956521,"size19": 1.0126582278481011,"size20": 0.3076923076923077}
+            ]
+}
+,
+            ]
+			},
+        
+{"name": "hue0",
+    "color": "hsl(30, 90%, 50%)",
+    "children": [
+        {
+            "name": "S4",
+            "color": "hsl(30, 90%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(30, 90%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0.5063291139240507,"size20": 0.3076923076923077},
+                { "name": "L3", "color": "hsl(30, 90%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0.4347826086956521,"size19": 0.2531645569620253,"size20": 0.6153846153846154},
+                { "name": "L2", "color": "hsl(30, 90%, 50%)", "size": 2.2641509433962264 ,"size16": 2.9154518950437316,"size17": 1.8867924528301887,"size18": 0.4347826086956521,"size19":0.5063291139240507,"size20": 1.2307692307692308},
+                { "name": "L1", "color": "hsl(30, 90%, 30%)", "size": 1.509433962264151 ,"size16": 0.8746355685131195,"size17":1.1320754716981132,"size18": 0.4347826086956521,"size19": 0.7594936708860759,"size20": 1.5384615384615383},
+                { "name": "L0", "color": "hsl(30, 90%,10%)", "size": 0.3773584905660377 ,"size16": 2.3323615160349855,"size17":0.7547169811320755,"size18": 6.956521739130435,"size19":0.5063291139240507,"size20": 1.8461538461538465}
+            ]
+        },
+        {
+            "name": "S3",
+            "color": "hsl(30, 70%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(30, 70%, 90%)", "size": 0 ,"size16": 0,"size17": 1.509433962264151,"size18": 0,"size19": 0,"size20": 0},
+                { "name": "L3", "color": "hsl(30, 70%, 70%)", "size": 0.3773584905660377 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20": 0.6153846153846154},
+                { "name": "L2", "color": "hsl(30, 70%, 50%)", "size": 1.1320754716981132 ,"size16": 2.0408163265306123,"size17": 0.3773584905660377,"size18": 0.8695652173913043,"size19":1.2658227848101269,"size20":1.5384615384615383},
+                { "name": "L1", "color": "hsl(30, 70%, 30%)", "size": 5.283018867924529 ,"size16": 6.41399416909621,"size17": 4.905660377358491,"size18":3.91304347826087,"size19":4.050632911392405,"size20": 3.076923076923077},
+                { "name": "L0", "color": "hsl(30, 70%,10%)", "size": 1.509433962264151 ,"size16": 3.498542274052478,"size17": 3.018867924528302,"size18":7.82608695652174,"size19": 3.5443037974683547,"size20": 5.538461538461538}
+            ]
+        },
+        {
+            "name": "S2",
+            "color": "hsl(30, 50%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(30, 50%, 90%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19": 0,"size20": 0.6153846153846154},
+                { "name": "L3", "color": "hsl(30, 50%, 70%)", "size": 0 ,"size16": 0,"size17": 0,"size18": 0,"size19":0.2531645569620253,"size20":1.8461538461538465},
+                { "name": "L2", "color": "hsl(30, 50%, 50%)", "size": 2.6415094339622645 ,"size16": 2.623906705539359,"size17": 1.509433962264151,"size18":0.4347826086956521,"size19": 2.0253164556962027,"size20": 1.2307692307692308},
+                { "name": "L1", "color": "hsl(30, 50%, 30%)", "size": 11.69811320754717 ,"size16": 6.705539358600583,"size17": 11.320754716981131,"size18": 7.82608695652174,"size19": 6.582278481012659,"size20":6.769230769230769},
+                { "name": "L0", "color": "hsl(30, 50%,10%)", "size": 3.39622641509434,"size16": 6.997084548104956,"size17": 4.905660377358491,"size18":5.217391304347826,"size19": 4.30379746835443,"size20":3.3846153846153846}
+            ]
+        },
+        {
+            "name": "S1",
+            "color": "hsl(30, 30%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(30, 30%, 90%)", "size": 0.3773584905660377 ,"size16": 0.2915451895043732,"size17": 0,"size18": 0,"size19": 0,"size20":0.3076923076923077},
+                { "name": "L3", "color": "hsl(30, 30%, 70%)", "size": 1.8867924528301887 ,"size16": 0,"size17": 0.7547169811320755,"size18": 0.4347826086956521,"size19": 1.2658227848101269,"size20": 1.2307692307692308},
+                { "name": "L2", "color": "hsl(30, 30%, 50%)", "size": 8.679245283018867 ,"size16": 5.247813411078718,"size17":4.528301886792453,"size18": 3.4782608695652173,"size19": 4.050632911392405,"size20": 2.769230769230769},
+                { "name": "L1", "color": "hsl(30, 30%, 30%)", "size": 12.830188679245284 ,"size16": 10.495626822157435,"size17": 16.22641509433962,"size18": 13.043478260869565,"size19":14.683544303797468,"size20": 8.0},
+                { "name": "L0", "color": "hsl(30, 30%,10%)", "size": 1.8867924528301887 ,"size16": 5.247813411078718,"size17": 7.547169811320755,"size18": 8.26086956521739,"size19":5.3164556962025316,"size20": 5.230769230769231}
+            ]
+        },
+        {
+            "name": "S0",
+            "color": "hsl(30,10%, 50%)",
+            "children": [
+                { "name": "L4", "color": "hsl(30,10%, 90%)", "size": 0.3773584905660377 ,"size16": 0,"size17": 0,"size18": 0,"size19":0.2531645569620253,"size20": 0},
+                { "name": "L3", "color": "hsl(30,10%, 70%)", "size": 1.8867924528301887,"size16": 0.2915451895043732,"size17": 0.7547169811320755,"size18": 0.8695652173913043,"size19":1.0126582278481011,"size20":1.2307692307692308},
+                { "name": "L2", "color": "hsl(30,10%, 50%)", "size": 5.660377358490567 ,"size16": 3.7900874635568513,"size17": 3.7735849056603774,"size18": 3.4782608695652173,"size19":3.79746835443038,"size20": 2.1538461538461537},
+                { "name": "L1", "color": "hsl(30,10%, 30%)", "size": 8.30188679245283 ,"size16": 8.746355685131196,"size17": 9.433962264150944,"size18": 6.521739130434782,"size19":7.59493670886076,"size20":4.615384615384616},
+                { "name": "L0", "color": "hsl(30,10%,10%)", "size": 2.6415094339622645 ,"size16": 3.206997084548105,"size17": 2.2641509433962264,"size18": 7.391304347826087,"size19":1.7721518987341771,"size20": 4.3076923076923075}
+            ]
+				},
+            ]
+			}
+        ]
+		
+};
+
+
+        var root = d3.hierarchy(nodeData)
+            .sum(function (d) { return d.size; })
+            .sort(function(a, b) { return b.value - a.value; });
+
+
+        partition(root);
+        arc = d3.arc()
+            .startAngle(function (d) { d.x0s = d.x0; return d.x0; })
+            .endAngle(function (d) { d.x1s = d.x1; return d.x1; })
+            .innerRadius(function (d) { return d.y0; })
+            .outerRadius(function (d) { return d.y1; });
+
+
+        var slice = g.selectAll('g')
+            .data(root.descendants())
+            .enter().append('g').attr("class", "node");
+
+            slice.append('path')
+    .attr("display", function (d) { return d.depth ? null : "none"; })
+    .attr("d", arc)
+    .style('stroke', '#000')
+    .style('stroke-width', '1px') 
+    .style("fill", function (d) { return d.data.color || color(d.data.name); });
+
+
+    function arcTweenPath(a, i) {
+
+        var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a);
+
+        function tween(t) {
+            var b = oi(t);
+            a.x0s = b.x0;
+            a.x1s = b.x1;
+            return arc(b);
+        }
+
+        return tween;
+    }
+
+    function arcTweenText(a, i) {
+
+        var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a);
+        function tween(t) {
+            var b = oi(t);
+            return "translate(" + arc.centroid(b) + ")rotate(" + computeTextRotation(b) + ")";
+        }
+        return tween;
+    }
+
+
+    function computeTextRotation(d) {
+        var angle = (d.x0 + d.x1) / Math.PI * 90;
+
+        return (angle < 120 || angle > 270) ? angle : angle + 180;  
+    }
+    d3.selectAll(".sizeSelect").on("click", function(d,i) {
+        var selectedValue = this.value;
+// important here!!
+            if (this.value === "size") {
+              root.sum(function (d) { return d.size; });
+            } else if (this.value === "size16") {
+                root.sum(function (d) { return d.size16; });
+            } else if (this.value === "size17") {
+                root.sum(function (d) { return d.size17; });
+            } else if (this.value === "size18") {
+                root.sum(function (d) { return d.size18; });
+            } else if (this.value === "size19") {
+                root.sum(function (d) { return d.size19; });
+            } else if (this.value === "size20") {
+                root.sum(function (d) { return d.size20; });
+
+            }
+
+            partition(root);
+
+            slice.selectAll("path").transition().duration(750).attrTween("d", arcTweenPath);
+            slice.selectAll("text").transition().duration(750).attrTween("transform", arcTweenText);
+        });
+
+</script>
+
+
+
+
+</body>

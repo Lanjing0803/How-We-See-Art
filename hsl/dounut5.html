@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Data Visualization</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+</head>
+
+<body class="container py-4">
+    <div id="donut"></div>
+  
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script >
+        var legendRectSize = 13;
+var legendSpacing = 7;
+
+        var totals = [
+        {
+    title: "Red Tone",
+    value: 68.60759493670886,
+    all:99.746835443
+},{
+    title: "Green Tone",
+    value: 14.177215189873419,
+    all:99.746835443
+},
+{
+    title: "Blue Tone",
+    value: 16.962025316455694,
+    all:99.746835443
+}
+];
+
+var width = 125;
+var height = 125;
+var radius = Math.min(width, height) / 2;
+var donutWidth = 26.0416666667;
+var color = d3.scaleOrdinal()
+.range([ "#FF0000","#00FF00", "#0000FF"]);
+
+var svg = d3.select('#donut')
+.append('svg')
+.attr('width', width)
+.attr('height', height)
+.append('g')
+.attr('transform', 'translate(' + (width / 2) +
+    ',' + (height / 2) + ')');
+
+var arc = d3.arc()
+.innerRadius(radius - donutWidth)
+.outerRadius(radius);
+
+var pie = d3.pie()
+.value(function(d) { return d.value; });
+
+var path = svg.selectAll('path')
+.data(pie(totals))
+.enter()
+.append('path')
+.attr('d', arc)
+.attr('fill', function(d, i) { return color(d.data.title); })
+.style('stroke', '#000')
+    .style('stroke-width', '1px') 
+
+
+
+
+function change(data) {
+var pie = d3.pie()
+    .value(function(d) { return d.value; })(data);
+
+path = d3.select("#donut")
+    .selectAll("path")
+    .data(pie);
+path.transition().duration(500).attrTween("d", arcTween); 
+
+}
+
+function arcTween(d) {
+var interpolate = d3.interpolate(this._current, d);
+this._current = interpolate(0);
+return function(t) {
+    return arc(interpolate(t));
+};
+}
+
+
+    </script>
+</body>
+</html>

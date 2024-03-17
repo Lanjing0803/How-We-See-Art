@@ -1,0 +1,327 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font: 10px sans-serif;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .label {
+            font-size: 12px;
+            fill: black;
+            text-anchor: middle;
+        }
+
+
+        svg {
+            shape-rendering: crispEdges;
+        }
+
+        #chart {
+            margin-bottom: 20px;
+        }
+
+        .legend {
+            text-align: center;
+        }
+
+        .legends5 {
+            display: inline-block;
+            margin-right: 1em;
+        }
+
+        .key-dot {
+            display: inline-block;
+            height: 13px;
+            margin-right: .5em;
+            width: 13px;
+        }
+
+        .notPicked .key-dot {
+            background: grey !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart">&nbsp;</div>
+
+
+    
+ <script>
+     var width = 700,
+            height = 500,
+            margin = 20;
+
+        //var color = d3.scale.category20();
+
+        var data = [
+            {
+                "century": "15th",
+                "cause": "GPE",
+                "value": 41,
+                "color": "hsl(210, 50%, 50%)"
+            },
+            {
+                "century": "15th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value": 30
+            },
+            {
+                "century": "15th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 32
+            },
+            {
+                "century": "16th",
+                "cause": "GPE",
+                "value": 71,
+                "color": "hsl(210, 50%, 50%)"
+            },
+            {
+                "century": "16th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value": 47
+            },
+            {
+                "century": "16th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 44
+            },
+            {
+                "century": "16th",
+                "cause": "",
+                 "color": "hsl(210, 30%, 75%)",
+                "value": 2
+            },
+            {
+                "century": "17th",
+                "cause": "GPE",
+                "value": 27,
+                "color": "hsl(210, 50%, 50%)"
+            },
+            {
+                "century": "17th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value": 30
+            },
+            {
+                "century": "17th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 38
+            },
+            {
+                "century": "17th",
+                "cause": "",
+                "color": "hsl(210, 30%, 75%)",
+                "value": 1
+            },
+            {
+                "century": "18th",
+                "cause": "GPE",
+                "value": 35,
+                "color": "hsl(210, 50%, 50%)"
+            },
+            {
+                "century": "18th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value":23
+            },
+            {
+                "century": "18th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 15
+            },
+            {
+                "century": "18th",
+                "cause": "",
+                "color": "hsl(210, 30%, 75%)",
+                "value": 1
+            },
+            {
+                "century": "19th",
+                "cause": "GPE",
+                "color": "hsl(210, 50%, 50%)",
+                "value": 41
+            },
+            {
+                "century": "19th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value": 54
+            },
+            {
+                "century": "19th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 44
+            },
+            {
+                "century": "19th",
+                "cause": "",
+                "color": "hsl(210, 30%, 75%)",
+                "value": 1
+            },
+            {
+                "century": "20th",
+                "cause": "Person",
+                "color": "hsl(270, 10%, 70%)",
+                "value": 24
+            },
+            {
+                "century": "20th",
+                "cause": "Organization",
+                "color": "hsl(30, 30%, 50%)",
+                "value": 24
+            },
+            {
+                "century": "20th",
+                "cause": "",
+                "color": "hsl(210, 30%, 75%)",
+                "value": 1
+            },
+        ];
+        var originalData = data;
+       
+
+        var x = d3.scale.linear()
+            .range([0, width - 3 * margin]);
+
+        var y = d3.scale.linear()
+            .range([0, height - 2 * margin]);
+
+        var n = d3.format(",d"),
+            p = d3.format("%");
+
+        var svg = d3.select("#chart").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + 2 * margin + "," + margin + ")");
+
+
+        var offset = 0;
+
+        var centurys = d3.nest()
+            .key(function (d) {
+                return d.century;
+            })
+            .entries(data);
+
+        var sum = centurys.reduce(function (v, p) {
+            return (p.offset = v) + (p.sum = p.values.reduceRight(function (v, d) {
+                d.parent = p;
+                return (d.offset = v) + d.value;
+            }, 0));
+        }, 0);
+
+    
+        var ytick = svg.selectAll(".y")
+            .data(y.ticks(10))
+            .enter().append("svg:g")
+            .attr("class", "y")
+            .attr("transform", function (d) {
+                return "translate(0," + y(1 - d) + ")";
+            });
+
+        ytick.append("svg:line")
+            .attr("x1", -6)
+
+        ytick.append("svg:text")
+            .attr("x", -8)
+            .attr("text-anchor", "end")
+            .attr("dy", ".35em")
+            .text(p);
+
+
+        var centurys = svg.selectAll(".century")
+            .data(centurys)
+            .enter().append("g")
+            .attr("class", "century")
+            .attr("xlink:title", function (d) {
+                return d.key;
+            })
+            .attr("transform", function (d) {
+                return "translate(" + x(d.offset / sum) + ")";
+            });
+
+            svg.selectAll(".century").append("text")
+    .text(function (d) {return d.key;}) 
+    .attr("x", function(d) {
+        return (x(d.sum / sum) / 2.7); 
+    })
+    .style("font-size", "15px")
+    .attr("y", function (d) {
+        return height - 20;
+    })
+    .attr("class", "labelTitle")
+    .append("title") 
+    .text(function (d) {return d.key;});
+
+
+   
+        var causes = centurys.selectAll(".cause")
+            .data(function (d) {
+                return d.values;
+            })
+            .enter().append("a")
+            .attr("class", "century")
+            .attr("xlink:title", function (d) {
+                return d.cause + " " + d.parent.key + ": " + n(d.value);
+            });
+
+        causes.append("rect")
+            .attr("y", function (d) {
+                return y(d.offset / d.parent.sum);
+            })
+            .attr("height", function (d) {
+                return y(d.value / d.parent.sum) ;
+            })
+            .attr("width", function (d) {
+                return x(d.parent.sum / sum) ;
+            })
+            .style("fill", function (d) {return d.color;})
+            .style("stroke", "black")
+            .style("stroke-width", 1); 
+
+        causes.append("text")
+            .text(function (d) {
+                return d.cause ;
+            })
+            .attr("x", function (d) {
+                return x(d.parent.sum / sum) / 2;
+            })
+            .attr("y", function (d) {
+                //return (y(d.offset / d.parent.sum) + 20);
+                return y(d.offset / d.parent.sum) + ((y(d.value / d.parent.sum)) / 2 + 4);
+            })
+            .attr("class", "label");
+
+        $("#chart").append('<div class="legend"></div>');
+        var legendVals = d3.set(data.map(function (d) {
+            return d.cause
+        })).values();
+
+
+        var legend5 = d3.select('.legend').selectAll("legend")
+            .data(legendVals);
+
+        var p = legend5.append("p").attr("class", "cause picked");
+        p.append("span").attr("class", "key-dot").style("background", function (d, i) {
+            return color[i];
+        });
+        p.insert("text").text(function (d, i) {
+            return d
+        });
+
+ </script>
