@@ -16,12 +16,15 @@ This repository serves as an archive for Python files and visualizations used in
 - `topic/artwork_title_categories.py`: Analyze artwork titles with ntlk by centuries
 - `topic/topic.html`: Interactive visualization on website
 
+NLTK's part-of-speech tagging and named entity recognition (NER) functionalities are used to identify and classify entities such as Organization, Person, and GPE (Geopolitical Entity).
+
 - `topic/artwork_titles.py`: Obtained detailed artwork titles from Met
 [Create World Cloud with the Word Cloud Generator](https://www.jasondavies.com/wordcloud/)
 
 - `hsl/met_color_bytime.py`: Obtained and cleaned color data from Met
 - `hsl/hsl_test.py`: Get HSL data for each century
 - `hsl/sunburst_all.html`: Interactive visualization on website
+  
 The color palettes used in artworks from the 15th century predominantly consisted of earthy tones, reflecting the prevalent artistic styles and pigment materials of the time. Shades of browns and muted tones were commonly observed, indicative of the natural pigments available during that era. In contrast, artworks from the 20th century exhibited a more diverse and vibrant range of colors compared to their 15th-century counterparts.
 
 
