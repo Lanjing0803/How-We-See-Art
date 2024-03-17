@@ -18,8 +18,11 @@ This repository serves as an archive for Python files and visualizations used in
 
 NLTK's part-of-speech tagging and named entity recognition (NER) functionalities are used to identify and classify entities such as Organization, Person, and GPE (Geopolitical Entity).
 
+
 - `topic/artwork_titles.py`: Obtained detailed artwork titles from Met
+
 [Create World Cloud with the Word Cloud Generator](https://www.jasondavies.com/wordcloud/)
+
 
 - `hsl/met_color_bytime.py`: Obtained and cleaned color data from Met
 - `hsl/hsl_test.py`: Get HSL data for each century
