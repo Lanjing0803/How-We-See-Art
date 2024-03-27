@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--Inspired by rsalzer's GitHub snippet: https://gist.github.com/rsalzer/598e9c59e3911fe02871e2be515e589b -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Artwork</title>
+</head>
+<body>
+    <button id="randomButton">Get Random Artwork</button>
+    <div id="artworkInfo"></div>
+    <div id="artworkImage"></div>
+    
+    <script>
+        document.getElementById('randomButton').addEventListener('click', async function() {
+            const keychainkey = "paintingIDs";
+            let res;
+                        if (!localStorage.getItem(keychainkey)) {
+                console.log("Keychain entry does not exist... creating it");
+                const url = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&medium=Paintings&departmentId=11&q=Painting';
+                
+                try {
+                    const response = await fetch(url);
+                    res = await response.json();
+                    localStorage.setItem(keychainkey, JSON.stringify(res));
+                } catch (error) {
+                    console.log('Error fetching data:', error);
+                    return;
+                }
+            } else {
+                console.log("Using keychain entry now");
+                res = JSON.parse(localStorage.getItem(keychainkey));
+            }
+
+            const max = res.total - 1;
+            console.log("Max: " + max);
+            const min = 0;
+            const random = Math.floor(Math.random() * (max - min + 1)) + min;
+            console.log("Random: " + random);
+            const picked = res.objectIDs[random];
+            console.log("Picked: " + picked);
+            const req2 = new Request('https://collectionapi.metmuseum.org/public/collection/v1/objects/' + picked);
+            
+            try {
+                const response2 = await fetch(req2);
+                const res2 = await response2.json();
+                const image = new Image();
+                image.src = res2.primaryImageSmall;
+                
+                image.onload = function() {
+                    displayArtworkInfo(image, res2);
+                };
+            } catch (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+
+        function displayArtworkInfo(image, artwork) {
+            const artworkInfoElement = document.getElementById('artworkInfo');
+            const artworkImageElement = document.getElementById('artworkImage');
+
+            artworkInfoElement.innerHTML = '';
+            artworkImageElement.innerHTML = '';
+            
+            const h2 = document.createElement('h2');
+            h2.textContent = artwork.title ? artwork.title : 'Unknown';
+            artworkInfoElement.appendChild(h2);
+            
+            const pArtist = document.createElement('p');
+            pArtist.textContent = "Artist: " + (artwork.artistDisplayName ? artwork.artistDisplayName : 'Unknown');
+            artworkInfoElement.appendChild(pArtist);
+            
+            const pDate = document.createElement('p');
+            pDate.textContent = "Date: " + (artwork.objectDate ? artwork.objectDate : 'Unknown');
+            artworkInfoElement.appendChild(pDate);
+            
+            const pMedium = document.createElement('p');
+            pMedium.textContent = "Medium: " + (artwork.medium ? artwork.medium : 'Unknown');
+            artworkInfoElement.appendChild(pMedium);
+            
+            artworkImageElement.appendChild(image);
+        }
+    </script>
+</body>
+</html>
